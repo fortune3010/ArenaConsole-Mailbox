@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA195: temas, histórico, XP, voz, torneios 8+, chamada. Ficheiro novo: não substitui o strings.xml. -->
+<resources>
+    <string name="ga195_theme_claro">Светлая</string>
+    <string name="ga195_theme_escuro">Тёмная</string>
+    <string name="ga195_theme_chocolate">Шоколад</string>
+    <string name="ga195_theme_verde">Неоновый зелёный</string>
+    <string name="ga195_theme_azul">Электрик синий</string>
+    <string name="ga195_theme_roxo">Королевский фиолетовый</string>
+    <string name="ga195_theme_vermelho">Огненный красный</string>
+    <string name="ga195_theme_rosa">Нежный розовый</string>
+    <string name="ga195_theme_ouro">Имперское золото</string>
+    <string name="ga195_theme_ciano">Геймерский циан</string>
+    <string name="ga195_theme_galaxia">Галактика</string>
+    <string name="ga195_theme_applied">Тема применена</string>
+    <string name="ga195_hist_room">Комната</string>
+    <string name="ga195_hist_cpu">Бот</string>
+    <string name="ga195_hist_opponent">Соперник</string>
+    <string name="ga195_hist_vs">VS</string>
+    <string name="ga195_hist_you">Вы</string>
+    <string name="ga195_xp_fmt" formatted="true">%1$d / %2$d XP</string>
+    <string name="ga195_voice_mic_denied">Нет доступа к микрофону: голосовой чат выключен.</string>
+    <string name="ga195_players_per_match_fmt" formatted="true">%1$d игроков в матче</string>
+    <string name="ga195_call_mute">Без звука</string>
+    <string name="ga195_call_speaker">Динамик</string>
+    <string name="ga195_call_camera">Камера</string>
+    <string name="ga195_call_hangup">Завершить</string>
+    <string name="ga195_call_accept">Принять</string>
+    <string name="ga195_call_decline">Отклонить</string>
+    <string name="ga195_call_encrypted">Зашифрованный вызов</string>
+</resources>

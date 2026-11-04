@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- GA195_THEMES: tag do decorView com o Skinner do tema -->
+    <item name="ga195_theme_tag" type="id" />
+</resources>

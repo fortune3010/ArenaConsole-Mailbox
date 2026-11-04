@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA195: temas, histórico, XP, voz, torneios 8+, chamada. Ficheiro novo: não substitui o strings.xml. -->
+<resources>
+    <string name="ga195_theme_claro">Claro</string>
+    <string name="ga195_theme_escuro">Escuro</string>
+    <string name="ga195_theme_chocolate">Chocolate</string>
+    <string name="ga195_theme_verde">Neon Verde</string>
+    <string name="ga195_theme_azul">Azul Elétrico</string>
+    <string name="ga195_theme_roxo">Roxo Real</string>
+    <string name="ga195_theme_vermelho">Vermelho Fogo</string>
+    <string name="ga195_theme_rosa">Rosa Doce</string>
+    <string name="ga195_theme_ouro">Ouro Imperial</string>
+    <string name="ga195_theme_ciano">Ciano Gamer</string>
+    <string name="ga195_theme_galaxia">Galáxia</string>
+    <string name="ga195_theme_applied">Tema aplicado</string>
+    <string name="ga195_hist_room">Sala</string>
+    <string name="ga195_hist_cpu">CPU</string>
+    <string name="ga195_hist_opponent">Adversário</string>
+    <string name="ga195_hist_vs">VS</string>
+    <string name="ga195_hist_you">Tu</string>
+    <string name="ga195_xp_fmt" formatted="true">%1$d / %2$d XP</string>
+    <string name="ga195_voice_mic_denied">Sem permissão de microfone: o chat de voz fica desligado.</string>
+    <string name="ga195_players_per_match_fmt" formatted="true">%1$d jogadores por partida</string>
+    <string name="ga195_call_mute">Mudo</string>
+    <string name="ga195_call_speaker">Altifalante</string>
+    <string name="ga195_call_camera">Câmara</string>
+    <string name="ga195_call_hangup">Desligar</string>
+    <string name="ga195_call_accept">Atender</string>
+    <string name="ga195_call_decline">Recusar</string>
+    <string name="ga195_call_encrypted">Chamada encriptada</string>
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA195: temas, histórico, XP, voz, torneios 8+, chamada. Ficheiro novo: não substitui o strings.xml. -->
+<resources>
+    <string name="ga195_theme_claro">فاتح</string>
+    <string name="ga195_theme_escuro">داكن</string>
+    <string name="ga195_theme_chocolate">شوكولاتة</string>
+    <string name="ga195_theme_verde">أخضر نيون</string>
+    <string name="ga195_theme_azul">أزرق كهربائي</string>
+    <string name="ga195_theme_roxo">بنفسجي ملكي</string>
+    <string name="ga195_theme_vermelho">أحمر ناري</string>
+    <string name="ga195_theme_rosa">وردي</string>
+    <string name="ga195_theme_ouro">ذهبي إمبراطوري</string>
+    <string name="ga195_theme_ciano">سماوي</string>
+    <string name="ga195_theme_galaxia">مجرة</string>
+    <string name="ga195_theme_applied">تم تطبيق السمة</string>
+    <string name="ga195_hist_room">غرفة</string>
+    <string name="ga195_hist_cpu">الكمبيوتر</string>
+    <string name="ga195_hist_opponent">الخصم</string>
+    <string name="ga195_hist_vs">ضد</string>
+    <string name="ga195_hist_you">أنت</string>
+    <string name="ga195_xp_fmt" formatted="true">%1$d / %2$d نقطة خبرة</string>
+    <string name="ga195_voice_mic_denied">لا يوجد إذن للميكروفون: الدردشة الصوتية متوقفة.</string>
+    <string name="ga195_players_per_match_fmt" formatted="true">%1$d لاعبين في كل مباراة</string>
+    <string name="ga195_call_mute">كتم</string>
+    <string name="ga195_call_speaker">مكبر الصوت</string>
+    <string name="ga195_call_camera">الكاميرا</string>
+    <string name="ga195_call_hangup">إنهاء</string>
+    <string name="ga195_call_accept">رد</string>
+    <string name="ga195_call_decline">رفض</string>
+    <string name="ga195_call_encrypted">مكالمة مشفرة</string>
+</resources>

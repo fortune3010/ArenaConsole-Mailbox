@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA195: temas, histórico, XP, voz, torneios 8+, chamada. Ficheiro novo: não substitui o strings.xml. -->
+<resources>
+    <string name="ga195_theme_claro">Açık</string>
+    <string name="ga195_theme_escuro">Koyu</string>
+    <string name="ga195_theme_chocolate">Çikolata</string>
+    <string name="ga195_theme_verde">Neon Yeşil</string>
+    <string name="ga195_theme_azul">Elektrik Mavisi</string>
+    <string name="ga195_theme_roxo">Kraliyet Moru</string>
+    <string name="ga195_theme_vermelho">Ateş Kırmızısı</string>
+    <string name="ga195_theme_rosa">Tatlı Pembe</string>
+    <string name="ga195_theme_ouro">İmparator Altını</string>
+    <string name="ga195_theme_ciano">Oyuncu Camgöbeği</string>
+    <string name="ga195_theme_galaxia">Galaksi</string>
+    <string name="ga195_theme_applied">Tema uygulandı</string>
+    <string name="ga195_hist_room">Oda</string>
+    <string name="ga195_hist_cpu">Bilgisayar</string>
+    <string name="ga195_hist_opponent">Rakip</string>
+    <string name="ga195_hist_vs">VS</string>
+    <string name="ga195_hist_you">Sen</string>
+    <string name="ga195_xp_fmt" formatted="true">%1$d / %2$d XP</string>
+    <string name="ga195_voice_mic_denied">Mikrofon izni yok: sesli sohbet kapalı.</string>
+    <string name="ga195_players_per_match_fmt" formatted="true">Maç başına %1$d oyuncu</string>
+    <string name="ga195_call_mute">Sessiz</string>
+    <string name="ga195_call_speaker">Hoparlör</string>
+    <string name="ga195_call_camera">Kamera</string>
+    <string name="ga195_call_hangup">Kapat</string>
+    <string name="ga195_call_accept">Yanıtla</string>
+    <string name="ga195_call_decline">Reddet</string>
+    <string name="ga195_call_encrypted">Şifreli arama</string>
+</resources>
