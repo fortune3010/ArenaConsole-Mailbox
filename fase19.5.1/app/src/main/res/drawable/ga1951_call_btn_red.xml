@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA1951_CALL_UI -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item><shape android:shape="oval"><solid android:color="#59FF2E55" /></shape></item>
+    <item android:top="3dp" android:left="3dp" android:right="3dp" android:bottom="3dp">
+        <shape android:shape="oval">
+            <gradient android:angle="270" android:startColor="#FFFF4D6D" android:endColor="#FFD10A2E" />
+            <stroke android:width="2dp" android:color="#FFFFA3B5" />
+        </shape>
+    </item>
+    <item android:top="7dp" android:left="16dp" android:right="16dp" android:bottom="34dp">
+        <shape android:shape="oval"><solid android:color="#33FFFFFF" /></shape>
+    </item>
+</layer-list>

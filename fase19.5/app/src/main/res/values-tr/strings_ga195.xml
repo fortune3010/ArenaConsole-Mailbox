@@ -28,4 +28,7 @@
     <string name="ga195_call_accept">Yanıtla</string>
     <string name="ga195_call_decline">Reddet</string>
     <string name="ga195_call_encrypted">Şifreli arama</string>
+    <string name="ga1951_call_incoming">Gelen arama</string>
+    <string name="ga1951_call_voice">Sesli arama</string>
+    <string name="ga1951_call_video">Görüntülü arama</string>
 </resources>

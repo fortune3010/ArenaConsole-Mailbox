@@ -28,4 +28,7 @@
     <string name="ga195_call_accept">Принять</string>
     <string name="ga195_call_decline">Отклонить</string>
     <string name="ga195_call_encrypted">Зашифрованный вызов</string>
+    <string name="ga1951_call_incoming">Входящий вызов</string>
+    <string name="ga1951_call_voice">Голосовой вызов</string>
+    <string name="ga1951_call_video">Видеовызов</string>
 </resources>

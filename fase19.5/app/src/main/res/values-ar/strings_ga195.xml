@@ -28,4 +28,7 @@
     <string name="ga195_call_accept">رد</string>
     <string name="ga195_call_decline">رفض</string>
     <string name="ga195_call_encrypted">مكالمة مشفرة</string>
+    <string name="ga1951_call_incoming">مكالمة واردة</string>
+    <string name="ga1951_call_voice">مكالمة صوتية</string>
+    <string name="ga1951_call_video">مكالمة فيديو</string>
 </resources>

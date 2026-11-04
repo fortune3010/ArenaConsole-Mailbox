@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA1951_CALL_UI -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="ring" android:innerRadiusRatio="2.35" android:thicknessRatio="22" android:useLevel="false">
+    <gradient android:type="sweep" android:startColor="#33B44CFF" android:centerColor="#FFF2D9FF" android:endColor="#FFB44CFF" />
+</shape>

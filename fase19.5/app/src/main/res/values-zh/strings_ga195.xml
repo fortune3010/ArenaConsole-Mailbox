@@ -28,4 +28,7 @@
     <string name="ga195_call_accept">接听</string>
     <string name="ga195_call_decline">拒绝</string>
     <string name="ga195_call_encrypted">加密通话</string>
+    <string name="ga1951_call_incoming">来电</string>
+    <string name="ga1951_call_voice">语音通话</string>
+    <string name="ga1951_call_video">视频通话</string>
 </resources>

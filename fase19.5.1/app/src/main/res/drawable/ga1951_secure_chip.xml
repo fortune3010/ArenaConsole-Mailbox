@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA1951_CALL_UI -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="22dp" />
+    <solid android:color="#CC1A0A30" />
+    <stroke android:width="1dp" android:color="#FF8B5CF6" />
+</shape>

@@ -28,4 +28,7 @@
     <string name="ga195_call_accept">Atender</string>
     <string name="ga195_call_decline">Recusar</string>
     <string name="ga195_call_encrypted">Chamada encriptada</string>
+    <string name="ga1951_call_incoming">Chamada recebida</string>
+    <string name="ga1951_call_voice">Chamada de voz</string>
+    <string name="ga1951_call_video">Chamada de vídeo</string>
 </resources>

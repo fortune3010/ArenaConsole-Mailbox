@@ -28,4 +28,7 @@
     <string name="ga195_call_accept">Accept</string>
     <string name="ga195_call_decline">Decline</string>
     <string name="ga195_call_encrypted">Encrypted call</string>
+    <string name="ga1951_call_incoming">Incoming call</string>
+    <string name="ga1951_call_voice">Voice call</string>
+    <string name="ga1951_call_video">Video call</string>
 </resources>
