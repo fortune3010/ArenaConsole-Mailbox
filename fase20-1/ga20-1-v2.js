@@ -2,9 +2,8 @@
 /* GA20_CONSOLE — Fase 20.1: Arena Console (PSP) no Launcher.
  *
  * Uso (na RAIZ do repo Arenaapk, com a pasta fase20-1 copiada do Kiro-arquivos-):
- *   node ~/Kiro-arquivos-/fase20-1/ga20-1.js
- *   (se o script não encontrar sozinho o ficheiro de entrada do servidor:
- *    node ~/Kiro-arquivos-/fase20-1/ga20-1.js --servidor=backend/<ficheiro>.js)
+ *   node ~/Kiro-arquivos-/fase20-1/ga20-1-v2.js
+ *   (v2: a S1 ancora na linha do attachHockeyP2P em backend/services/websocket.js; outro ficheiro: --servidor=<ficheiro>)
  *
  * Ficheiros NOVOS (copiados de fase20-1/files/, nunca sobrescreve um ficheiro diferente):
  *   app/src/main/java/com/gamearena/ui/Ga20Console.kt          painel da aba Console + biblioteca + FileProvider
@@ -15,7 +14,7 @@
  * Ficheiros EXISTENTES (edições com âncora):
  *   GamesActivity.kt     C1 seletor OpenDocument + painel · C2 "🔒 Console" -> "🎮 Console" · C3 painel novo na aba Console
  *   AndroidManifest.xml  M1 ConsoleLobbyActivity + Ga20ConsoleFileProvider
- *   entrada do servidor  S1 regista o namespace /console ao lado do NeonRush
+ *   websocket.js         S1 regista o namespace /console a seguir à linha do Hockey P2P
  * NÃO toca: lista Mobile / jogos HTML, GameWebViewActivity, Hockey, NeonRush, FileProvider do OTA.
  * Cada âncora tem de existir exatamente 1 vez; se alguma falhar NÃO escreve nada. Faz .bak. Idempotente (GA20_CONSOLE).
  */
@@ -94,44 +93,27 @@ const indentOf = (src, from) => { const i = src.indexOf(from); if (i < 0) return
 }
 
 /* ============================ Servidor: registo do /console ============================ */
-// Procura a linha que liga o NeonRush:  require('<...>/services/neonrush-namespace')(<io> ...
-const NR_RE = /^([ \t]*)(?:[\w$.]+\s*=\s*)?require\(\s*(['"])((?:\.{1,2}\/)[^'"]*?)neonrush-namespace(?:\.js)?\2\s*\)\s*\(\s*([A-Za-z_$][\w$]*)/m;
-function walk(dir, out) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name === 'node_modules' || e.name === 'public' || e.name.startsWith('.')) continue;
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out);
-    else if (e.isFile() && e.name.endsWith('.js')) out.push(p);
-  }
-  return out;
-}
-let consoleNsTarget = null;
+// v2: âncora no fim da linha do Hockey P2P em backend/services/websocket.js (L672), que é uma linha única com try/catch.
+// O /console fica numa linha nova logo a seguir, também dentro de try/catch (se falhar, o resto do servidor arranca na mesma).
+const WS = argServer || 'backend/services/websocket.js';
+const consoleNsTarget = path.join(path.dirname(WS), 'console-namespace.js'); // require('./console-namespace') ao lado do websocket.js
 {
-  const cands = argServer ? [argServer] : walk('backend', []).filter(f => NR_RE.test(fs.readFileSync(f, 'utf8')));
-  const ask = '  Mostra-me: grep -rn "neonrush-namespace\\|attachHockeyP2P" backend --include=*.js | grep -v node_modules';
-  if (argServer && !fs.existsSync(argServer)) { fails++; console.error('✗ S1 servidor: não encontro ' + argServer); }
-  else if (cands.length !== 1) {
-    fails++;
-    console.error('✗ S1 servidor: encontrei ' + cands.length + ' ficheiro(s) que ligam o NeonRush com require(...neonrush-namespace)(io), esperado 1.' +
-      (cands.length ? '\n  ' + cands.join('\n  ') + '\n  Escolhe um com: --servidor=<ficheiro>' : '') + '\n' + ask);
-  } else {
-    const file = cands[0], s0 = fs.readFileSync(file, 'utf8');
-    const all = s0.match(new RegExp(NR_RE.source, 'gm')) || [];
-    const mm = s0.match(NR_RE);
-    if (s0.includes(MARK)) {
-      console.log('= ' + file + ' já tem ' + MARK + ' (salto)');
-      consoleNsTarget = mm ? path.resolve(path.dirname(file), mm[3] + 'console-namespace.js') : null;
-    } else if (all.length !== 1 || !mm) {
-      fails++; console.error('✗ S1 servidor: em ' + file + ' a ligação do NeonRush aparece ' + all.length + ' vez(es), esperado 1.\n' + ask);
-    } else {
-      const [line, ind, q, rel, ioVar] = mm;
-      const nrMod = path.resolve(path.dirname(file), rel + 'neonrush-namespace.js');
-      if (!fs.existsSync(nrMod)) { fails++; console.error('✗ S1 servidor: o require aponta para ' + nrMod + ', que não existe.\n' + ask); }
-      else {
-        consoleNsTarget = path.join(path.dirname(nrMod), 'console-namespace.js');
-        const reg = ind + 'require(' + q + rel + 'console-namespace' + q + ')(' + ioVar + '); // GA20_CONSOLE: Arena Console (sala 1x1 + sinalização do emulador)\n';
-        const s = must(s0, line, reg + line, 'S1 servidor: namespace /console registado em ' + file + ' (io = ' + ioVar + ')', file);
-        if (s !== s0) writes.push([file, s, true]);
+  const ask = '  Mostra-me: grep -n "attachHockeyP2P\\|WS-HOCKEY-P2P" ' + WS;
+  if (!fs.existsSync(WS)) { fails++; console.error('✗ S1 servidor: não encontro ' + WS + '\n' + ask); }
+  else {
+    const s0 = fs.readFileSync(WS, 'utf8');
+    if (s0.includes(MARK)) console.log('= ' + WS + ' já tem ' + MARK + ' (salto)');
+    else {
+      const a = "console.error('[WS-HOCKEY-P2P] falhou:', e.message); }";
+      const i = s0.indexOf(a), ls = s0.lastIndexOf('\n', i) + 1, le = s0.indexOf('\n', i);
+      const line = i < 0 ? '' : s0.slice(ls, le < 0 ? s0.length : le);
+      if (i >= 0 && s0.split(a).length === 2 && !line.includes('attachHockeyP2P(io')) {
+        fails++; console.error('✗ S1 servidor: a âncora existe mas não está na linha do attachHockeyP2P(io.\n' + ask);
+      } else {
+        const ind = line.match(/^[ \t]*/)[0];
+        const reg = '\n' + ind + "try { require('./console-namespace')(io); } catch (e) { console.error('[WS-CONSOLE] falhou:', e.message); } // GA20_CONSOLE: Arena Console (sala 1x1 + sinalização do emulador)";
+        const s = must(s0, a, a + reg, 'S1 servidor: /console registado a seguir ao Hockey P2P em ' + WS, WS);
+        if (s !== s0) writes.push([WS, s, true]);
       }
     }
   }
@@ -147,7 +129,7 @@ const NEW = [
 ];
 for (const [rel, dest] of NEW) {
   const from = path.join(SRC, rel);
-  const to = (dest && dest()) ? path.relative(process.cwd(), dest()) : rel;
+  const to = dest ? path.relative(process.cwd(), dest()) : rel;
   if (!fs.existsSync(from)) { fails++; console.error('✗ falta ' + from + ' (copia a pasta fase20-1 inteira)'); continue; }
   const body = fs.readFileSync(from, 'utf8');
   if (fs.existsSync(to)) {

@@ -4,19 +4,19 @@
 ```
 cd ~/Kiro-arquivos- && git pull
 cd ~/Arenaapk
-node ~/Kiro-arquivos-/fase20-1/ga20-1.js
+node ~/Kiro-arquivos-/fase20-1/ga20-1-v2.js
 ```
-O script corre na raiz do Arenaapk e lê os ficheiros novos de `~/Kiro-arquivos-/fase20-1/files/`. No fim imprime a linha `git add` exata. Com o ficheiro de entrada do servidor em `backend/server.js`, fica assim:
+**v2:** a S1 passou a ancorar no fim da linha do Hockey P2P em `backend/services/websocket.js` (`console.error('[WS-HOCKEY-P2P] falhou:', e.message); }`). O `/console` entra numa linha nova logo a seguir, dentro de `try/catch`, como os outros namespaces. A v1 falhava porque a linha do NeonRush começa por `try {` e a regex exigia o `require` no início da linha.
+O script corre na raiz do Arenaapk e lê os ficheiros novos de `~/Kiro-arquivos-/fase20-1/files/`. No fim imprime a linha `git add` exata:
 ```
-git add app/src/main/java/com/gamearena/ui/GamesActivity.kt app/src/main/AndroidManifest.xml backend/server.js \
+git add app/src/main/java/com/gamearena/ui/GamesActivity.kt app/src/main/AndroidManifest.xml backend/services/websocket.js \
   app/src/main/java/com/gamearena/ui/Ga20Console.kt app/src/main/java/com/gamearena/ui/ConsoleLobbyActivity.kt \
   app/src/main/res/xml/console_file_paths.xml backend/services/console-namespace.js backend/public/games/console/lobby.html
 git commit -m "Fase 20.1: Arena Console - upload ISO, sala Host/Guest e Intent START_GAME"
 git push arena rooms-client-validation:rooms-client-validation
 ```
 Se alguma âncora falhar, o script não escreve nada e mostra o `grep` que deves mandar-me.
-Se não encontrar o ficheiro de entrada do servidor, manda-me:
-`grep -rn "neonrush-namespace\|attachHockeyP2P" backend --include=*.js | grep -v node_modules`
+Se a S1 falhar, manda-me: `grep -n "attachHockeyP2P\|WS-HOCKEY-P2P" backend/services/websocket.js`
 
 ## O que muda
 **Ficheiros novos**
@@ -32,7 +32,7 @@ Se não encontrar o ficheiro de entrada do servidor, manda-me:
   - "🔒 Console" passa a "🎮 Console";
   - uma linha antes de `if (currentFilter == Filter.CONSOLE) {`. Se o painel novo falhar, o cadeado antigo (`ga3RenderConsoleLocked`) continua a aparecer. A lista Mobile e os jogos HTML não são tocados.
 - `AndroidManifest.xml`: a `ConsoleLobbyActivity` e o provider `${applicationId}.console.fileprovider`. O provider do OTA fica como está.
-- Entrada do servidor: `require('./services/console-namespace')(io)` na linha antes do NeonRush.
+- `backend/services/websocket.js`: `try { require('./console-namespace')(io); } catch (e) {…}` na linha a seguir ao Hockey P2P.
 
 ## Fluxo
 1. Na aba **Console**, carregas em **Carregar jogo (ISO)** e escolhes o ficheiro (`.iso`, `.cso` ou `.pbp`).
