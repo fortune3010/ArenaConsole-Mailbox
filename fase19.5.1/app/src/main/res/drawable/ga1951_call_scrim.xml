@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- GA1951_CALL_UI -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient android:angle="270" android:startColor="#66000000" android:centerColor="#00000000" android:endColor="#80000000" />
-</shape>
