@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GA20_CONSOLE (Fase 20.1): partilha só a pasta dos jogos PSP (getExternalFilesDir(DOCUMENTS)/roms/) com o Arena Console. -->
+<paths>
+    <external-files-path name="roms" path="Documents/roms/" />
+</paths>
