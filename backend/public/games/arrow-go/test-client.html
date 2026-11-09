@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Arrow Go - Test Client</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0B0F1A;
+            color: #22FF88;
+            padding: 20px;
+        }
+        .controls {
+            background: #141C30;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #22FF88;
+            color: #0B0F1A;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1AE070;
+        }
+        input {
+            background: #0B0F1A;
+            border: 1px solid #22FF88;
+            color: #FFF;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        #log {
+            background: #000;
+            color: #0F0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            height: 400px;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+        }
+        .player {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .player.green { background: #22FF88; color: #000; }
+        .player.yellow { background: #FFD700; color: #000; }
+        .player.red { background: #FF4757; color: #FFF; }
+        .player.white { background: #FFF; color: #000; }
+        .player.blue { background: #00C8FF; color: #000; }
+        .player.purple { background: #A855F7; color: #FFF; }
+    </style>
+</head>
+<body>
+    <h1>🎮 Arrow Go! - Test Client</h1>
+    
+    <div class="controls">
+        <h3>Conectar</h3>
+        <input type="text" id="roomCode" placeholder="Código da sala (ex: ABCD)" value="TEST">
+        <input type="text" id="playerName" placeholder="Teu nome" value="TestPlayer">
+        <button onclick="connect()">CONECTAR</button>
+        <button onclick="clearLog()">LIMPAR LOG</button>
+    </div>
+    
+    <div class="controls">
+        <h3>Ações</h3>
+        <button onclick="loseLife()">PERDER VIDA</button>
+        <button onclick="completeLevel()">COMPLETAR NÍVEL</button>
+        <button onclick="disconnect()">DESCONECTAR</button>
+    </div>
+    
+    <div class="controls">
+        <h3>Jogadores na Sala</h3>
+        <div id="players"></div>
+    </div>
+    
+    <div class="controls">
+        <h3>Log de Eventos</h3>
+        <div id="log"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = null;
+        let myPlayerId = null;
+        let myColor = null;
+        let roomCode = null;
+        let players = {};
+
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        function updatePlayersUI() {
+            const playersDiv = document.getElementById('players');
+            playersDiv.innerHTML = '';
+            
+            Object.entries(players).forEach(([id, player]) => {
+                const div = document.createElement('div');
+                div.className = `player ${player.color}`;
+                div.textContent = `${player.playerName} - ${player.lives} ❤️ ${player.eliminated ? '💀' : ''}`;
+                playersDiv.appendChild(div);
+            });
+        }
+
+        function connect() {
+            roomCode = document.getElementById('roomCode').value || 'TEST';
+            const playerName = document.getElementById('playerName').value || 'TestPlayer';
+            
+            log('🔌 Conectando ao servidor...');
+            
+            // Para teste: usar token fake
+            socket = io('/arrow-go', {
+                auth: { token: 'test-token-' + Date.now() },
+                transports: ['websocket']
+            });
+
+            socket.on('connect', () => {
+                log('✅ Conectado! Socket ID: ' + socket.id);
+                
+                socket.emit('join_room', {
+                    roomCode: roomCode,
+                    role: 'guest',
+                    playerName: playerName
+                });
+            });
+
+            socket.on('room_joined', (data) => {
+                log('🎮 Entrei na sala!');
+                log(JSON.stringify(data, null, 2));
+                
+                myPlayerId = data.playerId;
+                myColor = data.color;
+                
+                data.players.forEach(p => {
+                    players[p.playerId] = p;
+                });
+                
+                updatePlayersUI();
+            });
+
+            socket.on('player_joined', (data) => {
+                log('👤 Novo jogador entrou!');
+                log(JSON.stringify(data, null, 2));
+                
+                data.players.forEach(p => {
+                    players[p.playerId] = p;
+                });
+                
+                updatePlayersUI();
+            });
+
+            socket.on('game_start', (data) => {
+                log('🚀 JOGO COMEÇOU!');
+                log('Seed: ' + data.seed);
+                
+                data.players.forEach(p => {
+                    players[p.playerId] = p;
+                });
+                
+                updatePlayersUI();
+            });
+
+            socket.on('player_life_lost', (data) => {
+                log(`💔 ${data.playerName} perdeu vida! (${data.lives}/3)`);
+                
+                if (data.eliminated) {
+                    log(`💀 ${data.playerName} FOI ELIMINADO!`);
+                }
+                
+                data.players.forEach(p => {
+                    players[p.playerId] = p;
+                });
+                
+                updatePlayersUI();
+            });
+
+            socket.on('game_over', (data) => {
+                log('🏁 FIM DE JOGO!');
+                log('Vencedor: ' + data.winnerName);
+                log('Ranking:');
+                data.rankings.forEach(r => {
+                    log(`  ${r.rank}º - ${r.playerName} (${r.score} pts)`);
+                });
+            });
+
+            socket.on('player_left', (data) => {
+                log(`👋 ${data.playerName} saiu da sala`);
+                
+                data.players.forEach(p => {
+                    players[p.playerId] = p;
+                });
+                
+                updatePlayersUI();
+            });
+
+            socket.on('error', (data) => {
+                log('❌ ERRO: ' + data.message);
+            });
+
+            socket.on('disconnect', () => {
+                log('🔌 Desconectado do servidor');
+            });
+
+            socket.on('connect_error', (error) => {
+                log('❌ Erro de conexão: ' + error.message);
+            });
+        }
+
+        function loseLife() {
+            if (!socket || !myPlayerId) {
+                alert('Conecta-te primeiro!');
+                return;
+            }
+            
+            log('📤 Emitindo lose_life...');
+            socket.emit('lose_life', {
+                roomCode: roomCode,
+                playerId: myPlayerId
+            });
+        }
+
+        function completeLevel() {
+            if (!socket || !myPlayerId) {
+                alert('Conecta-te primeiro!');
+                return;
+            }
+            
+            const player = players[myPlayerId];
+            if (!player) return;
+            
+            log('📤 Emitindo level_complete...');
+            socket.emit('level_complete', {
+                roomCode: roomCode,
+                playerId: myPlayerId,
+                level: (player.level || 1) + 1,
+                score: (player.score || 0) + 100
+            });
+        }
+
+        function disconnect() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+                myPlayerId = null;
+                players = {};
+                updatePlayersUI();
+                log('👋 Desconectado manualmente');
+            }
+        }
+    </script>
+</body>
+</html>
